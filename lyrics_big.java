@@ -4,6 +4,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //open source, public domain, yadayadayada. made by Jordon O. (Humanish)
 
@@ -20,7 +22,7 @@ class lyrics {
   private static String censorWord(String word) {
     if (word.length() <= 1) return word;
     
-    // Keeps first and last letter, replaces middle with asterisks
+    // Preserve first and last character, replace middle with asterisks
     return word.charAt(0) + 
            "*".repeat(Math.max(0, word.length() - 2)) + 
            word.charAt(word.length() - 1);
@@ -31,26 +33,31 @@ class lyrics {
     // Get obfuscated swear words
     List<String> SWEAR_WORDS = getSwearWords();
     
-    // Split text into words
-    String[] words = text.split("\\s+");
-    
-    // Process each word
-    for (int i = 0; i < words.length; i++) {
-      // Convert to lowercase for case-insensitive matching
-      String lowerWord = words[i].toLowerCase()
-        .replaceAll("[^a-zA-Z]", "");
-      
-      // Check if word is a swear word
-      for (String swear : SWEAR_WORDS) {
-        if (lowerWord.equals(swear)) {
-          words[i] = censorWord(words[i]);
-          break;
-        }
+    // Create a pattern that matches whole words or partial words
+    StringBuilder patternBuilder = new StringBuilder("(");
+    for (int i = 0; i < SWEAR_WORDS.size(); i++) {
+      patternBuilder.append(SWEAR_WORDS.get(i));
+      if (i < SWEAR_WORDS.size() - 1) {
+        patternBuilder.append("|");
       }
     }
+    patternBuilder.append(")");
     
-    // Reconstruct the text
-    return String.join(" ", words);
+    Pattern swearPattern = Pattern.compile(patternBuilder.toString(), 
+                                            Pattern.CASE_INSENSITIVE);
+    
+    // Use a matcher to find and replace swear words
+    Matcher matcher = swearPattern.matcher(text);
+    StringBuffer result = new StringBuffer();
+    
+    while (matcher.find()) {
+      String match = matcher.group();
+      String censored = censorWord(match);
+      matcher.appendReplacement(result, censored);
+    }
+    matcher.appendTail(result);
+    
+    return result.toString();
   }
 
   public static void main(String[] args) {
@@ -72,18 +79,19 @@ class lyrics {
     }
     artist = scan.nextLine();
     if (lyrics) {
-     
       
       // Removes quotation marks and censors text
-      artistfix = artistfix.replace("\"", "");
-      artistfix = censorText(artistfix);
-       artistfix = artist.replace("\\n", "\n");
-      // Copies formatted lyrics to clipboard
-      StringSelection stringSelection = new StringSelection(artistfix);
+     artistfix = artist;
+      String artistfix2 = censorText(artistfix);
+	  String artistfix3 = artistfix2.replace("\"", "");
+      String artistfix4 = artistfix3.replace("\\n", "\n");
+
+      // Copies censored text to clipboard
+      StringSelection stringSelection = new StringSelection(artistfix4);
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
       clipboard.setContents(stringSelection, null);
       
-      System.out.println("\n" + artistfix);
+      System.out.println("\n" + artistfix4);
     } else {
       for (int i = 0; i < artist.length(); i++) {
         String ltr = artist.substring(i, i + 1);
