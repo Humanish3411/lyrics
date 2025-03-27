@@ -15,7 +15,7 @@ class lyrics {
     String[] words = new String(decoded).split(",");
     return new ArrayList<>(java.util.Arrays.asList(words));
   }
-  
+
   // Method to censor a word
   private static String censorWord(String word) {
     if (word.length() <= 1) return word;
@@ -25,7 +25,7 @@ class lyrics {
            "*".repeat(Math.max(0, word.length() - 2)) + 
            word.charAt(word.length() - 1);
   }
-  
+
   // Method to censor text
   private static String censorText(String text) {
     // Get obfuscated swear words
@@ -52,7 +52,7 @@ class lyrics {
     // Reconstruct the text
     return String.join(" ", words);
   }
-  
+
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
     String track = "";
@@ -72,14 +72,12 @@ class lyrics {
     }
     artist = scan.nextLine();
     if (lyrics) {
+     
       
       // Removes quotation marks and censors text
       artistfix = artistfix.replace("\"", "");
-      artistfix = artistfix.replace("`", "");
       artistfix = censorText(artistfix);
-      // New approach to handle line breaks
-      artistfix = artist.replace("\\n", System.lineSeparator());
-      
+       artistfix = artist.replace("\\n", "\n");
       // Copies formatted lyrics to clipboard
       StringSelection stringSelection = new StringSelection(artistfix);
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
