@@ -1,4 +1,5 @@
 lyrics.java: main application
+
 lyrics_big.java: original application before I obfuscated it
 
 If you're using PowerShell, download lyrics.java, cd to the folder you put it in, run `javac lyrics.java`, then `java lyrics`. Needs a JDK to run, pretty sure. Replace lyrics with lyrics_big if you prefer the prettier code, or whatever you rename it to if you feel like doing so (weirdo). 
