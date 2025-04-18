@@ -1,6 +1,8 @@
 lyrics.java: main application, does not censor output; old code, returns only a link. Refer to the old part of the README to run this. 
 
-lyrics_big.java: most updated entry, returns the lyrics in both scenarios now! Use the batch file and https://repo1.maven.org/maven2/org/json/json/20250107/json-20250107.jar to run them easily. All files need to be in the same directory, and this works only on Windows. Refer to an older build for the old functionality.
+lyrics_big.java: most updated entry, returns the lyrics in both scenarios now! Use the batch file and https://repo1.maven.org/maven2/org/json/json/20250107/json-20250107.jar to run them easily. All files need to be in the same directory, and this works only on Windows. Refer to an older build for the old functionality. 
+
+Run the batch file with everything in the same directory and it should work just fine, I hope.
 
 .
 
